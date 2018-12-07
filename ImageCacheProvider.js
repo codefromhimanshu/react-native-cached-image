@@ -20,10 +20,10 @@ class ImageCacheProvider extends React.Component {
         ...ImageCacheManagerOptionsPropTypes,
 
         // Preload urls
-        urlsToPreload: PropTypes.arrayOf(PropTypes.string).isRequired,
-        numberOfConcurrentPreloads: PropTypes.number.isRequired,
+        urlsToPreload: PropTypes.arrayOf(PropTypes.string),
+        numberOfConcurrentPreloads: PropTypes.number,
 
-        onPreloadComplete: PropTypes.func.isRequired,
+        onPreloadComplete: PropTypes.func,
     };
 
     static defaultProps = {
