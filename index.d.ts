@@ -3,7 +3,7 @@ import * as React from 'react'
 
 declare module "react-native-cached-image" {
   namespace CachedImage {
-    interface Image extends ReactNative.Image {
+    interface Image extends ReactNative.ImageProps {
       /**
        * props for the ActivityIndicator that is shown while the image is downloaded.
        */
