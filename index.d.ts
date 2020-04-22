@@ -17,6 +17,8 @@ declare module "react-native-cached-image" {
        * when sending the request to download the image. (default: () => Promise.resolve({})) 
        */
       resolveHeaders?: Promise<{}>
+
+      renderImage?: (props: ReactNative.ImageProps) => React.Node
       /**
        * array|bool an array of keys to use from the source.
        * uri query string or a bool value stating whether to use the entire query string or not. (default: false)
