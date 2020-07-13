@@ -72,7 +72,7 @@ module.exports = {
      * @returns {String}
      */
     getCacheDir() {
-        return fs.dirs.CacheDir + '/imagesCacheDir';
+        return fs.dirs.CacheDir;
     },
 
     /**
