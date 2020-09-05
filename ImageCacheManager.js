@@ -76,7 +76,23 @@ module.exports = (defaultOptions = {}, urlCache = cache, fs = fsUtils, path = pa
               // add to cache
               .then(() => urlCache.set(cacheableUrl, fileRelativePath, options.ttl))
               // return filePath
-              .then(() => filePath)
+              .then(removedUrls => {
+                removedUrls.forEach(url => {
+                  const cacheableUrl = path.getCacheableUrl(url, options.useQueryParamsInCacheKey);
+                  const filePath = path.getImageFilePath(cacheableUrl, options.cacheLocation);
+                  // remove file from cache
+                  return (
+                    urlCache
+                      .remove(cacheableUrl)
+                      // remove file from disc
+                      .then(() => {
+                        fs.deleteFile(filePath);
+                        console.log(`Deleted file - ${filePath}`);
+                      })
+                  );
+                });
+                return filePath;
+              })
           );
         })
     );
