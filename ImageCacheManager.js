@@ -4,9 +4,18 @@ const _ = require('lodash');
 
 const fsUtils = require('./utils/fsUtils');
 const pathUtils = require('./utils/pathUtils');
-const MemoryCache = require('react-native-clcasher/MemoryCache').default;
+const LRUCache = require('react-native-cache/Cache').default;
+const AsyncStorage = require('@react-native-community/async-storage').default;
 
-module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, path = pathUtils) => {
+const urlCache = new LRUCache({
+    namespace: "anar",
+    policy: {
+        maxEntries: 500
+    },
+    backend: AsyncStorage
+});
+
+module.exports = (defaultOptions = {}, urlCache = urlCache, fs = fsUtils, path = pathUtils) => {
 
     const defaultDefaultOptions = {
         headers: {},
@@ -123,7 +132,7 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
          */
         clearCache(options = {}) {
             _.defaults(options, defaultOptions);
-            return urlCache.flush()
+            return urlCache.clearAll()
                 .then(() => fs.cleanDir(options.cacheLocation));
         },
 
