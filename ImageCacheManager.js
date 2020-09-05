@@ -5,10 +5,12 @@ const pathUtils = require('./utils/pathUtils');
 import { Cache } from 'react-native-cache';
 import AsyncStorage from '@react-native-community/async-storage';
 
+const MAX_IMAGES = 500;
+
 const cache = new Cache({
   namespace: 'anar',
   policy: {
-    maxEntries: 500,
+    maxEntries: MAX_IMAGES,
   },
   backend: AsyncStorage,
 });
