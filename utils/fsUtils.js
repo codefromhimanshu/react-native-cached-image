@@ -94,6 +94,9 @@ module.exports = {
             activeDownloads[toFile] = ensurePath(toFile)
                 .then(() => RNFetchBlob
                     .config({
+                        useDownloadManager: true,
+                        notification: false,
+                        mediaScannable: false,
                         path: tmpFile
                     })
                     .fetch('GET', fromUrl, headers)
