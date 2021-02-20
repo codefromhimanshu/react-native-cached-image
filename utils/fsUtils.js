@@ -94,9 +94,17 @@ module.exports = {
             activeDownloads[toFile] = ensurePath(toFile)
                 .then(() => RNFetchBlob
                     .config({
-                        useDownloadManager: true,
-                        notification: false,
-                        mediaScannable: false,
+                        fileCache : true,
+                        addAndroidDownloads: {
+                            useDownloadManager: true, // <-- this is the only thing required
+                            // Optional, override notification setting (default to true)
+                            notification: false,
+                            // Optional, but recommended since android DownloadManager will fail when
+                            // the url does not contains a file extension, by default the mime type will be text/plain
+                            // mime: 'text/plain',
+                            mediaScannable: false,
+                            path: tmpFile
+                        }, 
                         path: tmpFile
                     })
                     .fetch('GET', fromUrl, headers)
