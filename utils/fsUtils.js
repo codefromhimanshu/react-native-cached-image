@@ -72,7 +72,7 @@ module.exports = {
      * @returns {String}
      */
     getCacheDir() {
-        return fs.dirs.DownloadDir;
+        return fs.dirs.CacheDir;
     },
 
     /**
