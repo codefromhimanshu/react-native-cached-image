@@ -18,31 +18,6 @@ function getDirPath(path) {
     return path;
 }
 
-function ensurePath(path) {
-    const dirPath = getDirPath(path);
-    return fs.isDir(dirPath)
-        .then(isDir => {
-            if (!isDir) {
-                return fs.mkdir(dirPath)
-                    // check if dir has indeed been created because
-                    // there's no exception on incorrect user-defined paths (?)...
-                    .then(() => fs.isDir(dirPath))
-                    .then(isDir => {
-                        if (!isDir) {
-                            throw new Error('Invalid cacheLocation');
-                        }
-                    })
-            }
-        })
-        .catch(err => {
-            // ignore folder already exists errors
-            if (err.message.includes('folder already exists')) {
-                return;
-            }
-            return Promise.reject(err);
-        });
-}
-
 function collectFilesInfo(basePath) {
     return fs.stat(basePath)
         .then((info) => {
@@ -66,6 +41,31 @@ function collectFilesInfo(basePath) {
  * wrapper around common filesystem actions
  */
 module.exports = {
+
+    ensurePath(path) {
+        const dirPath = getDirPath(path);
+        return fs.isDir(dirPath)
+            .then(isDir => {
+                if (!isDir) {
+                    return fs.mkdir(dirPath)
+                        // check if dir has indeed been created because
+                        // there's no exception on incorrect user-defined paths (?)...
+                        .then(() => fs.isDir(dirPath))
+                        .then(isDir => {
+                            if (!isDir) {
+                                throw new Error('Invalid cacheLocation');
+                            }
+                        })
+                }
+            })
+            .catch(err => {
+                // ignore folder already exists errors
+                if (err.message.includes('folder already exists')) {
+                    return;
+                }
+                return Promise.reject(err);
+            });
+    },
 
     /**
      * returns the local cache dir
@@ -91,8 +91,9 @@ module.exports = {
             // using a temporary file, if the download is accidentally interrupted, it will not produce a disabled file
             const tmpFile = toFile + '.tmp';
             // create an active download for this file
-            activeDownloads[toFile] = ensurePath(toFile)
-                .then(() => RNFetchBlob
+            // activeDownloads[toFile] = ensurePath(toFile)
+            //     .then(() => 
+            activeDownloads[toFile] =  RNFetchBlob
                     .config({
                         fileCache : true,
                         addAndroidDownloads: {
@@ -142,8 +143,8 @@ module.exports = {
                         this.deleteFile(tmpFile);
                         delete activeDownloads[toFile];
                         return toFile;
-                    })
-                );
+                    });
+                // );
         }
         return activeDownloads[toFile];
     },

@@ -65,7 +65,7 @@ module.exports = {
         const hostCachePath = getHostCachePathComponent(url);
         const cacheKey = generateCacheKey(url);
 
-        return `${cacheLocation}/${hostCachePath}/${cacheKey}`;
+        return `${cacheLocation}/${hostCachePath}.${cacheKey}`;
     },
 
     /**
@@ -78,7 +78,7 @@ module.exports = {
         const hostCachePath = getHostCachePathComponent(url);
         const cacheKey = generateCacheKey(url);
 
-        return `${hostCachePath}/${cacheKey}`;
+        return `${hostCachePath}.${cacheKey}`;
     },
 
 
